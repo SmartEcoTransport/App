@@ -1,19 +1,19 @@
 import React from 'react';
-import Login from '@/components/Login'
+import Creat from '@/components/CreaTrajet'
 import Navbar from '@/components/Navbar';
 type Props = {
   // Ajoute ici les props que ton composant recevra
 };
 
 
-const MyComponent: React.FC<Props> = (props) => {
+const CreaTrajet: React.FC<Props> = (props) => {
   return (
     <div>
       <Navbar/>
-      <Login/>
+      <Creat/>
       {/* Ajoute ton contenu ici */}
     </div>
   );
 };
 
-export default MyComponent;
+export default CreaTrajet;
