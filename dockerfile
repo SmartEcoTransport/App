@@ -30,6 +30,9 @@ COPY --from=builder /app/web-build ./
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Set environment variables for writable directories
+ENV EXPO_CLI_WORKSPACE_DIR=/tmp/.expo
+
 # Expose port 8080
 EXPOSE 8080
 
