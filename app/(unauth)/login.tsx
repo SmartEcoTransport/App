@@ -18,7 +18,6 @@ import {
   TextInput,
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
-import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 const theme = {
   ...DefaultTheme,
@@ -27,8 +26,8 @@ const theme = {
     background: '#013328',
     background2: '#fff',
     surface: '#1d1d1d',
-    primary: '#CC8B65',  // accent color for focused inputs & buttons
-    text: '#ffff',
+    primary: '#CC8B65', // accent color for focused inputs & buttons
+    text: '#E3DCD2',
     onSurface: '#000',
     onPrimary: '#013328',
   },
@@ -72,125 +71,123 @@ export default function LoginScreen() {
 
   return (
     <PaperProvider theme={theme}>
-        <Navbar />
+      <Navbar />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView
-          contentContainerStyle={[
-            styles.scrollContainer,
-            { backgroundColor: '#E3DCD2' },
-          ]}
+          contentContainerStyle={[styles.scrollContainer, { backgroundColor: '#E3DCD2' }]}
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.box}>
-           <View style={styles.container}>
-            
+            <View style={styles.innerContainer}>
+              {isRegisterMode ? (
+                <>
+                  <Text
+                    variant="headlineMedium"
+                    style={[styles.title, { color: theme.colors.text }]}
+                  >
+                    Inscription
+                  </Text>
 
-            
-            {isRegisterMode ? (
-              <>
-                <Text
-                  variant="headlineMedium"
-                  style={[styles.title, { color: theme.colors.text }]}
-                >
-                  Inscription
-                </Text>
+                  <TextInput
+                    mode="flat"
+                    label="Adresse Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    style={styles.input}
+                    placeholderTextColor="#000" // Placeholder en noir
+                  />
+                  <TextInput
+                    mode="flat"
+                    label="Nom d'utilisateur"
+                    value={username}
+                    onChangeText={setUsername}
+                    style={styles.input}
+                    placeholderTextColor="#000" // Placeholder en noir
+                  />
+                  <TextInput
+                    mode="flat"
+                    label="Mot de passe"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.input}
+                    placeholderTextColor="#000" // Placeholder en noir
+                  />
 
-                <TextInput
-                  mode="flat"
-                  label="Adresse Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  style={styles.input}
-                />
-                <TextInput
-                  mode="flat"
-                  label="Nom d'utilisateur"
-                  value={username}
-                  onChangeText={setUsername}
-                  style={styles.input}
-                />
-                <TextInput
-                  mode="flat"
-                  label="Mot de passe"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                  style={styles.input}
-                />
+                  {errorMessage ? (
+                    <Text style={styles.error}>{errorMessage}</Text>
+                  ) : null}
 
-                {errorMessage ? (
-                  <Text style={styles.error}>{errorMessage}</Text>
-                ) : null}
+                  <Button
+                    mode="contained"
+                    onPress={handleRegister}
+                    style={styles.button}
+                    buttonColor={theme.colors.primary}
+                    textColor="#013328"
+                  >
+                    S'inscrire
+                  </Button>
 
-                <Button
-                  mode="contained"
-                  onPress={handleRegister}
-                  style={styles.button}
-                  buttonColor={theme.colors.primary}
-                  textColor="#013328"
-                >
-                  S'inscrire
-                </Button>
+                  <Button
+                    onPress={() => setIsRegisterMode(false)}
+                    textColor={theme.colors.text}
+                  >
+                    Retour à la connexion
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Text
+                    variant="headlineMedium"
+                    style={[styles.title, { color: theme.colors.text }]}
+                  >
+                    Connexion
+                  </Text>
 
-                <Button
-                  onPress={() => setIsRegisterMode(false)}
-                  textColor={theme.colors.text}
-                >
-                  Retour à la connexion
-                </Button>
-              </>
-            ) : (
-              <>
-                <Text
-                  variant="headlineMedium"
-                  style={[styles.title, { color: theme.colors.text }]}
-                >
-                  Connexion
-                </Text>
+                  <TextInput
+                    mode="flat"
+                    label="Adresse Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    style={styles.input}
+                    placeholderTextColor="#000" // Placeholder en noir
+                    autoCapitalize="none"
+                  />
+                  <TextInput
+                    mode="flat"
+                    label="Mot de passe"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.input}
+                    placeholderTextColor="#000" // Placeholder en noir
+                  />
 
-                <TextInput
-                  mode="flat"
-                  label="Adresse Email"
-                  value={email}
-                  onChangeText={setEmail}
-                  style={styles.input}
-                  autoCapitalize='none'
-                  
-                />
-                <TextInput
-                  mode="flat"
-                  label="Mot de passe"
-                  secureTextEntry
-                  value={password}
-                  onChangeText={setPassword}
-                  style={styles.input}
-                />
+                  {errorMessage ? (
+                    <Text style={styles.error}>{errorMessage}</Text>
+                  ) : null}
 
-                {errorMessage ? (
-                  <Text style={styles.error}>{errorMessage}</Text>
-                ) : null}
+                  <Button
+                    mode="contained"
+                    onPress={handleLogin}
+                    style={styles.button}
+                    buttonColor={theme.colors.primary}
+                    textColor="#013328"
+                  >
+                    Se connecter
+                  </Button>
 
-                <Button
-                  mode="contained"
-                  onPress={handleLogin}
-                  style={styles.button}
-                  buttonColor={theme.colors.primary}
-                  textColor="#013328"
-                >
-                  Se connecter
-                </Button>
-
-                <Button
-                  onPress={() => setIsRegisterMode(true)}
-                  textColor={theme.colors.text}
-                >
-                  Créer un compte
-                </Button>
-              </>
-            )}
+                  <Button
+                    onPress={() => setIsRegisterMode(true)}
+                    textColor={theme.colors.text}
+                  >
+                    Créer un compte
+                  </Button>
+                </>
+              )}
             </View>
           </View>
         </ScrollView>
@@ -200,39 +197,42 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  Container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+  },
   box: {
-    // backgroundColor: '#013328',
-    width: '60%', // Largeur du composant
-    padding: 16, // Ajoute de l'espace interne
-    borderRadius: 8, // Coins arrondis
-    alignItems: 'center', // Centre le contenu interne horizontalement
+    width: '80%',
+    maxWidth: 400, // Limite la largeur sur des écrans plus grands
+    backgroundColor: '#013328',
+    borderRadius: 12,
+    padding: 20,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
   },
   scrollContainer: {
     flexGrow: 1,
-    padding: 24,
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
-  container: {
-    width: '80%',
-    flex: 1, // Le conteneur occupe tout l'écran
-    justifyContent: 'center', // Centre verticalement
-    alignItems: 'center', // Centre horizontalement
-    backgroundColor: '#013328',
-    padding: 16, 
-    borderRadius: 8,
+  innerContainer: {
+    alignItems: 'center',
   },
   title: {
     marginBottom: 16,
   },
   input: {
-    width: '80%',
-    margin: 8,
+    width: '100%',
+    marginBottom: 12,
     backgroundColor: theme.colors.background2,
-    color: 'black',
   },
   button: {
-    width: '80%',
+    width: '100%',
     marginVertical: 8,
   },
   error: {

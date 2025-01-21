@@ -56,7 +56,7 @@ export default function HomeScreen() {
             variant="headlineMedium"
             style={[styles.title, { color: theme.colors.text }]}
           >
-            Welcome to SmartEco
+            Welcome to SmartEco 
           </PaperText>
 
           {/* Replace <Text onPress=...> with a Touchable for the link */}

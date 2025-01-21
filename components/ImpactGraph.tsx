@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 8,
     padding: 8,
-    backgroundColor: '#1d1d1d',
+    backgroundColor: '#013328',
   },
   loader: {
     flex: 1,

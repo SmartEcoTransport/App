@@ -130,7 +130,7 @@ const TripsAggregationList = () => {
         mode="contained"
         onPress={() => router.push('/(auth)/create-trip')}
         style={styles.createButton}
-        textColor="#013328"
+        textColor="#fff"
       >
         Créer un trajet
       </Button>
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   createButton: {
-    backgroundColor: '#B3E189',
+    backgroundColor: '#CC8B65',
     marginBottom: 16,
   },
   container: {
