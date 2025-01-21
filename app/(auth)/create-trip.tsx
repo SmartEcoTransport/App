@@ -5,6 +5,7 @@ import {
   KeyboardAvoidingView,
   FlatList,
   View,
+  Keyboard,
 } from 'react-native';
 import {
   TextInput,
@@ -14,7 +15,7 @@ import {
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
 import { Dropdown } from 'react-native-paper-dropdown';
-import { DatePickerInput} from 'react-native-paper-dates';
+import { DatePickerInput } from 'react-native-paper-dates';
 import { useRouter } from 'expo-router';
 import { API_BASE_URL } from '../../constants/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -24,10 +25,10 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#013328', // Dark green
+    background: '#013328',
     surface: '#1d1d1d',
-    primary: '#CC8B65', // Accent
-    text: '#E3DCD2', // Light text
+    primary: '#CC8B65',
+    text: '#E3DCD2',
     onSurface: '#E3DCD2',
     onPrimary: '#013328',
   },
@@ -202,6 +203,7 @@ const CreateTrip: React.FC = () => {
                 </PaperText>
               )}
               style={styles.suggestionsList}
+              keyboardShouldPersistTaps="handled"
             />
           )}
         </View>
@@ -234,6 +236,7 @@ const CreateTrip: React.FC = () => {
                 </PaperText>
               )}
               style={styles.suggestionsList}
+              keyboardShouldPersistTaps="handled"
             />
           )}
         </View>
@@ -298,7 +301,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#CC8B65"
+    backgroundColor: "#CC8B65",
   },
   title: {
     fontSize: 24,

@@ -28,7 +28,7 @@ export default function Navbar() {
       {isLoggedIn ? (
         <IconButton
           icon="account"
-          color="#FFFFFF"
+          iconColor='#FFFFFF'
           onPress={() => handleNavigate('/profile')}
         />
       ) : (
