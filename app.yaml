@@ -7,6 +7,10 @@ runtime_config:
   operating_system: 'ubuntu22'
   runtime_version: 1.23
 
+env_variables:
+  EXPO_NO_TYPESCRIPT_TYPEGEN: "1"
+  EXPO_CLI_PROJECT_ROOT: /tmp
+
 manual_scaling:
   instances: 1
 resources:
