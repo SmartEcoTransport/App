@@ -194,9 +194,11 @@ const TripList: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
+    width: '80%',
     flex: 1,
     backgroundColor: '#013328',
     padding: 16,
+    borderRadius: 8,
   },
   scrollContainer: {
     paddingBottom: 16,

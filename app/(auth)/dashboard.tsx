@@ -43,11 +43,11 @@ export default function Dashboard() {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={[styles.screen, { backgroundColor: '#CC8B65' }]}>
+      <View style={[styles.screen, { backgroundColor: '#E3DCD2' }]}>
       <Navbar />
         <View style={styles.contentWrapper}>
 
-          <TouchableOpacity onPress={logout}>
+          {/* <TouchableOpacity onPress={logout}>
             <PaperText
               style={[
                 styles.logoutLink,
@@ -56,7 +56,7 @@ export default function Dashboard() {
             >
               Log Out
             </PaperText>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <ImpactGraph />
           <TripsAggregationList />
@@ -69,6 +69,7 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    borderRadius: 8,
   },
   contentWrapper: {
     flex: 1,

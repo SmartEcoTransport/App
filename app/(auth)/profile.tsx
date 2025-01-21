@@ -77,7 +77,10 @@ export default function Profile() {
 
   return (
     <PaperProvider theme={theme}>
-      <View style={[styles.screen, { backgroundColor: '#CC8B65' }]}>
+      <View style={[styles.screen, {  backgroundColor: 'rgb(227,220,210)', // Fallback solid color
+    backgroundImage:
+      'linear-gradient(90deg, rgba(227,220,210,1) 0%, rgba(189,180,167,1) 49%, rgba(215,217,185,1) 100%)',
+  }]}>
         <Navbar />
         <View style={styles.contentWrapper}>
           {loading ? (
@@ -93,7 +96,7 @@ export default function Profile() {
                 />
                 <PaperText style={styles.usernameText}>{username}</PaperText>
               </View>
-              <TouchableOpacity onPress={logout}>
+              {/* <TouchableOpacity onPress={logout}>
                 <PaperText
                   style={[
                     styles.logoutLink,
@@ -102,7 +105,7 @@ export default function Profile() {
                 >
                   Log Out
                 </PaperText>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TripList />
             </>
           )}
@@ -115,6 +118,7 @@ export default function Profile() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    borderRadius: 8,
   },
   contentWrapper: {
     flex: 1,
@@ -126,6 +130,10 @@ const styles = StyleSheet.create({
   userInfoWrapper: {
     alignItems: 'center',
     marginVertical: 20,
+    backgroundColor: '#013328',
+    padding: 15,
+    borderTopLeftRadius: 100, // Modifie la valeur (10) selon le rayon que tu veux
+  borderTopRightRadius: 100, 
   },
   usernameText: {
     fontSize: 24,

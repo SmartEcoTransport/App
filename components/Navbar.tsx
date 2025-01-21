@@ -39,8 +39,15 @@ export default function Navbar() {
         >
           Log In
         </Button>
-      )}
-
+      ) 
+      }
+      <Button
+          mode="text"
+          onPress={() => handleNavigate('/dashboard')}
+          labelStyle={{ color: '#FFFFFF' }}
+        >
+          Dashboard
+        </Button>
       {/* For Mobile: Hamburger icon that opens a Menu */}
       {isMobile ? (
         <Menu

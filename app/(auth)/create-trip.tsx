@@ -168,6 +168,7 @@ const CreateTrip: React.FC = () => {
   return (
     <PaperProvider theme={theme}>
       <Navbar />
+
       <KeyboardAvoidingView style={styles.container} behavior="padding">
         <PaperText variant="headlineMedium" style={styles.title}>
           Créer un trajet
@@ -279,33 +280,29 @@ const CreateTrip: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: "#CC8B65",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-    color: theme.colors.text,
-  },
-  input: {
-    marginBottom: 8,
-    backgroundColor: theme.colors.surface,
-    color: theme.colors.primary,
-  },
+  
+  // title: {
+  //   fontSize: 24,
+  //   fontWeight: 'bold',
+  //   marginBottom: 16,
+  //   textAlign: 'center',
+  //   color: theme.colors.text,
+  // },
+  // input: {
+  //   marginBottom: 8,
+  //   backgroundColor: theme.colors.surface,
+  //   color: theme.colors.primary,
+  // },
   dropdown: {
     marginBottom: 16,
   },
   datePicker: {
     marginBottom: 16,
   },
-  submitButton: {
-    marginTop: 16,
-    backgroundColor: "#B3E189",
-  },
+  // submitButton: {
+  //   marginTop: 16,
+  //   backgroundColor: "#B3E189",
+  // },
   suggestionItem: {
     padding: 8,
     borderBottomWidth: 1,
@@ -322,6 +319,34 @@ const styles = StyleSheet.create({
   },
   autocompleteContainer: {
     marginBottom: 16,
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.background,
+  },
+  card: {
+    width: '50%',
+    backgroundColor: theme.colors.surface,
+    padding: 16,
+    borderRadius: 8,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: theme.colors.text,
+  },
+  input: {
+    marginBottom: 16,
+    backgroundColor: theme.colors.surface,
+    color: theme.colors.text,
+  },
+  submitButton: {
+    marginTop: 16,
+    backgroundColor: theme.colors.primary,
   },
 });
 

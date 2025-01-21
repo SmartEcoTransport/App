@@ -25,10 +25,11 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     background: '#013328',
+    background2: '#fff',
     surface: '#1d1d1d',
     primary: '#CC8B65',  // accent color for focused inputs & buttons
-    text: '#E3DCD2',
-    onSurface: '#E3DCD2',
+    text: '#ffff',
+    onSurface: '#000',
     onPrimary: '#013328',
   },
 };
@@ -79,112 +80,119 @@ export default function LoginScreen() {
         <ScrollView
           contentContainerStyle={[
             styles.scrollContainer,
-            { backgroundColor: '#CC8B65' },
+            { backgroundColor: '#E3DCD2' },
           ]}
           keyboardShouldPersistTaps="handled"
         >
-          {isRegisterMode ? (
-            <>
-              <Text
-                variant="headlineMedium"
-                style={[styles.title, { color: theme.colors.text }]}
-              >
-                Inscription
-              </Text>
+          <View style={styles.box}>
+           <View style={styles.container}>
+            
 
-              <TextInput
-                mode="flat"
-                label="Adresse Email"
-                value={email}
-                onChangeText={setEmail}
-                style={styles.input}
-              />
-              <TextInput
-                mode="flat"
-                label="Nom d'utilisateur"
-                value={username}
-                onChangeText={setUsername}
-                style={styles.input}
-              />
-              <TextInput
-                mode="flat"
-                label="Mot de passe"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                style={styles.input}
-              />
+            
+            {isRegisterMode ? (
+              <>
+                <Text
+                  variant="headlineMedium"
+                  style={[styles.title, { color: theme.colors.text }]}
+                >
+                  Inscription
+                </Text>
 
-              {errorMessage ? (
-                <Text style={styles.error}>{errorMessage}</Text>
-              ) : null}
+                <TextInput
+                  mode="flat"
+                  label="Adresse Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  style={styles.input}
+                />
+                <TextInput
+                  mode="flat"
+                  label="Nom d'utilisateur"
+                  value={username}
+                  onChangeText={setUsername}
+                  style={styles.input}
+                />
+                <TextInput
+                  mode="flat"
+                  label="Mot de passe"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={setPassword}
+                  style={styles.input}
+                />
 
-              <Button
-                mode="contained"
-                onPress={handleRegister}
-                style={styles.button}
-                buttonColor={theme.colors.primary}
-                textColor="#013328"
-              >
-                S'inscrire
-              </Button>
+                {errorMessage ? (
+                  <Text style={styles.error}>{errorMessage}</Text>
+                ) : null}
 
-              <Button
-                onPress={() => setIsRegisterMode(false)}
-                textColor={theme.colors.text}
-              >
-                Retour à la connexion
-              </Button>
-            </>
-          ) : (
-            <>
-              <Text
-                variant="headlineMedium"
-                style={[styles.title, { color: theme.colors.text }]}
-              >
-                Connexion
-              </Text>
+                <Button
+                  mode="contained"
+                  onPress={handleRegister}
+                  style={styles.button}
+                  buttonColor={theme.colors.primary}
+                  textColor="#013328"
+                >
+                  S'inscrire
+                </Button>
 
-              <TextInput
-                mode="flat"
-                label="Adresse Email"
-                value={email}
-                onChangeText={setEmail}
-                style={styles.input}
-                autoCapitalize='none'
-                
-              />
-              <TextInput
-                mode="flat"
-                label="Mot de passe"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                style={styles.input}
-              />
+                <Button
+                  onPress={() => setIsRegisterMode(false)}
+                  textColor={theme.colors.text}
+                >
+                  Retour à la connexion
+                </Button>
+              </>
+            ) : (
+              <>
+                <Text
+                  variant="headlineMedium"
+                  style={[styles.title, { color: theme.colors.text }]}
+                >
+                  Connexion
+                </Text>
 
-              {errorMessage ? (
-                <Text style={styles.error}>{errorMessage}</Text>
-              ) : null}
+                <TextInput
+                  mode="flat"
+                  label="Adresse Email"
+                  value={email}
+                  onChangeText={setEmail}
+                  style={styles.input}
+                  autoCapitalize='none'
+                  
+                />
+                <TextInput
+                  mode="flat"
+                  label="Mot de passe"
+                  secureTextEntry
+                  value={password}
+                  onChangeText={setPassword}
+                  style={styles.input}
+                />
 
-              <Button
-                mode="contained"
-                onPress={handleLogin}
-                style={styles.button}
-                buttonColor={theme.colors.primary}
-                textColor="#013328"
-              >
-                Se connecter
-              </Button>
+                {errorMessage ? (
+                  <Text style={styles.error}>{errorMessage}</Text>
+                ) : null}
 
-              <Button
-                onPress={() => setIsRegisterMode(true)}
-                textColor={theme.colors.text}
-              >
-                Créer un compte
-              </Button>
-            </>
-          )}
+                <Button
+                  mode="contained"
+                  onPress={handleLogin}
+                  style={styles.button}
+                  buttonColor={theme.colors.primary}
+                  textColor="#013328"
+                >
+                  Se connecter
+                </Button>
+
+                <Button
+                  onPress={() => setIsRegisterMode(true)}
+                  textColor={theme.colors.text}
+                >
+                  Créer un compte
+                </Button>
+              </>
+            )}
+            </View>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </PaperProvider>
@@ -192,6 +200,13 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
+  box: {
+    // backgroundColor: '#013328',
+    width: '60%', // Largeur du composant
+    padding: 16, // Ajoute de l'espace interne
+    borderRadius: 8, // Coins arrondis
+    alignItems: 'center', // Centre le contenu interne horizontalement
+  },
   scrollContainer: {
     flexGrow: 1,
     padding: 24,
@@ -199,17 +214,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: '80%',
+    flex: 1, // Le conteneur occupe tout l'écran
+    justifyContent: 'center', // Centre verticalement
+    alignItems: 'center', // Centre horizontalement
+    backgroundColor: '#013328',
+    padding: 16, 
+    borderRadius: 8,
   },
   title: {
     marginBottom: 16,
   },
   input: {
     width: '80%',
-    marginBottom: 8,
-    backgroundColor: theme.colors.background,
+    margin: 8,
+    backgroundColor: theme.colors.background2,
+    color: 'black',
   },
   button: {
     width: '80%',
