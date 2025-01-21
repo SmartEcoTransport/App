@@ -1,82 +1,76 @@
-import React from 'react';
-import { AppBar, Toolbar, Typography, Button, IconButton, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
-import { useMediaQuery } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useRouter } from "expo-router";
+import React, { useState } from 'react';
+import { View, useWindowDimensions } from 'react-native';
+import { Appbar, Menu, Button, IconButton } from 'react-native-paper';
+import { useRouter } from 'expo-router';
+import { useAuth } from '../context/AuthContext';
 
-
-const Navbar = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobile = useMediaQuery('(max-width:600px)'); // Détecte les écrans < 600px
+export default function Navbar() {
+  const [menuVisible, setMenuVisible] = useState(false);
+  const { width } = useWindowDimensions();
+  const isMobile = width < 600; // Breakpoint for "mobile" vs "desktop"
   const router = useRouter();
+  const { isLoggedIn, logout } = useAuth(); // Get the login status and logout function from AuthContext
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const openMenu = () => setMenuVisible(true);
+  const closeMenu = () => setMenuVisible(false);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleNavigate = (path: string) => {
+    closeMenu();
+    router.push(path);
   };
 
   return (
-    <AppBar
-      position="sticky"
-      sx={{
-        backgroundColor: '#013328', // Couleur personnalisée
-        color: '#CC8B65',
-      }}
-    >
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1, fontWeight: 'bold', color: 'white' }}>
-          Smart Eco
-        </Typography>
-        {isMobile ? (
-          // Affiche un bouton hamburger si l'écran est petit
-          <>
-            <IconButton
-              edge="end"
-              color="inherit"
-              aria-label="menu"
-              onClick={handleMenuOpen}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              anchorEl={anchorEl}
-              open={isMenuOpen}
-              onClose={handleMenuClose}
-            >
+    <Appbar.Header style={{ backgroundColor: '#013328' }}>
+      {/* App Title / Brand */}
+      <Appbar.Content title="Smart Eco" titleStyle={{ color: '#FFFFFF' }} />
 
-              <MenuItem onClick={() => { handleMenuClose(); router.push("/index2"); }}>
-                Accueil
-              </MenuItem>
-              <MenuItem onClick={() => { handleMenuClose(); router.push("/"); }}>
-                À propos
-              </MenuItem>
-              <MenuItem onClick={() => { handleMenuClose(); router.push("/explore"); }}>
-                Services
-              </MenuItem>
-            </Menu>
-          </>
-        ) : (
-          // Affiche les boutons normaux si l'écran est plus grand
-          <>
-            <Button color="inherit" sx={{ marginLeft: 1 }} onClick={() => { handleMenuClose(); router.push("/"); }}>
-              Accueil
-            </Button>
-            <Button color="inherit" sx={{ marginLeft: 1 }} onClick={() => { handleMenuClose(); router.push("/"); }}>
-              À propos
-            </Button>
-            <Button color="inherit" sx={{ marginLeft: 1 }} onClick={() => { handleMenuClose(); router.push("/explore"); }}>
-              Services
-            </Button>
-          </>
-        )}
-      </Toolbar>
-    </AppBar>
+      {/* Profile Icon or Log In Button */}
+      {isLoggedIn ? (
+        <IconButton
+          icon="account"
+          color="#FFFFFF"
+          onPress={() => handleNavigate('/profile')}
+        />
+      ) : (
+        <Button
+          mode="text"
+          onPress={() => handleNavigate('/login')}
+          labelStyle={{ color: '#FFFFFF' }}
+        >
+          Log In
+        </Button>
+      )}
+
+      {/* For Mobile: Hamburger icon that opens a Menu */}
+      {isMobile ? (
+        <Menu
+          visible={menuVisible}
+          onDismiss={closeMenu}
+          anchor={
+            <Appbar.Action icon="menu" color="#FFFFFF" onPress={openMenu} />
+          }
+          contentStyle={{ backgroundColor: '#013328' }}
+        >
+          <Menu.Item
+            onPress={() => {
+              logout();
+              closeMenu();
+            }}
+            title="Logout"
+            titleStyle={{ color: '#FFFFFF' }}
+          />
+        </Menu>
+      ) : (
+        // For Desktop / Larger screens: Show inline buttons
+        <View style={{ flexDirection: 'row' }}>
+          <Button
+            onPress={() => logout()}
+            labelStyle={{ color: '#FFFFFF' }}
+          >
+            Logout
+          </Button>
+        </View>
+      )}
+    </Appbar.Header>
   );
-};
-
-export default Navbar;
+}
