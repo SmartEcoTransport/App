@@ -25,7 +25,7 @@ const theme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#FAEBD7 ',
+    background: '#013328',
     surface: '#1d1d1d',
     primary: '#CC8B65',
     text: '#E3DCD2',
@@ -168,134 +168,144 @@ const CreateTrip: React.FC = () => {
   return (
     <PaperProvider theme={theme}>
       <Navbar />
-      <View style={styles.card}>
-        <View style={styles.card2}>
-          <KeyboardAvoidingView style={styles.container} behavior="padding">
-            <PaperText variant="headlineMedium" style={styles.title}>
-              Créer un trajet
-            </PaperText>
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <PaperText variant="headlineMedium" style={styles.title}>
+          Créer un trajet
+        </PaperText>
 
-            <View style={styles.autocompleteContainer}>
-              <TextInput
-                label="Adresse de départ (optionnelle)"
-                value={startAddress}
-                onChangeText={(text) => {
-                  setStartAddress(text);
-                  handleTyping(text, setStartSuggestions);
-                }}
-                onFocus={() => setIsStartFocused(true)}
-                onBlur={() => setIsStartFocused(false)}
-                style={styles.input}
-              />
-              {isStartFocused && startSuggestions.length > 0 && (
-                <FlatList
-                  data={startSuggestions}
-                  keyExtractor={(_, index) => index.toString()}
-                  renderItem={({ item }) => (
-                    <PaperText
-                      style={styles.suggestionItem}
-                      onPress={() => {
-                        setStartAddress(item);
-                        setIsStartFocused(false);
-                      }}
-                    >
-                      {item}
-                    </PaperText>
-                  )}
-                  style={styles.suggestionsList}
-                  keyboardShouldPersistTaps="handled"
-                />
+        <View style={styles.autocompleteContainer}>
+          <TextInput
+            label="Adresse de départ (optionnelle)"
+            value={startAddress}
+            onChangeText={(text) => {
+              setStartAddress(text);
+              handleTyping(text, setStartSuggestions);
+            }}
+            onFocus={() => setIsStartFocused(true)}
+            onBlur={() => setIsStartFocused(false)}
+            style={styles.input}
+          />
+          {isStartFocused && startSuggestions.length > 0 && (
+            <FlatList
+              data={startSuggestions}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => (
+                <PaperText
+                  style={styles.suggestionItem}
+                  onPress={() => {
+                    setStartAddress(item);
+                    setIsStartFocused(false);
+                  }}
+                >
+                  {item}
+                </PaperText>
               )}
-              <TextInput
-                label="Adresse d'arrivée (optionnelle)"
-                value={endAddress}
-                onChangeText={(text) => {
-                  setEndAddress(text);
-                  handleTyping(text, setEndSuggestions);
-                }}
-                onFocus={() => setIsEndFocused(true)}
-                onBlur={() => setIsEndFocused(false)}
-                style={styles.input}
-              />
-              {isEndFocused && endSuggestions.length > 0 && (
-                <FlatList
-                  data={endSuggestions}
-                  keyExtractor={(_, index) => index.toString()}
-                  renderItem={({ item }) => (
-                    <PaperText
-                      style={styles.suggestionItem}
-                      onPress={() => {
-                        setEndAddress(item);
-                        setIsEndFocused(false);
-                      }}
-                    >
-                      {item}
-                    </PaperText>
-                  )}
-                  style={styles.suggestionsList}
-                  keyboardShouldPersistTaps="handled"
-                />
-              )}
-            </View>
-
-            <View style={styles.autocompleteContainer}>
-            
-              <TextInput
-              label="Distance en km (si pas d'adresse)"
-              value={distanceKm}
-              onChangeText={setDistanceKm}
-              keyboardType="numeric"
-              style={styles.input}
+              style={styles.suggestionsList}
+              keyboardShouldPersistTaps="handled"
             />
-
-            <Dropdown
-              label={
-                modeID
-                  ? transportModes.find((mode) => mode.value === modeID)?.label || 'Mode de transport'
-                  : 'Mode de transport'
-              }
-              options={[...transportModes]}
-              onSelect={(value) => setModeID(value)}
-              visible={showDropdown}
-              showDropDown={() => setShowDropdown(true)}
-              onDismiss={() => setShowDropdown(false)}
-              inputProps={{
-                style: styles.dropdown,
-              }}
-            />
-
-            <DatePickerInput
-              label="Date du trajet"
-              value={tripDate}
-              onChange={(date) => setTripDate(date)}
-              style={styles.datePicker}
-            />
-
-            <Button mode="contained" onPress={handleSubmit} style={styles.submitButton}>
-              Créer le trajet
-            </Button>
-            </View>
-
-    
-          </KeyboardAvoidingView>
+          )}
         </View>
-      </View>
+
+        <View style={styles.autocompleteContainer}>
+          <TextInput
+            label="Adresse d'arrivée (optionnelle)"
+            value={endAddress}
+            onChangeText={(text) => {
+              setEndAddress(text);
+              handleTyping(text, setEndSuggestions);
+            }}
+            onFocus={() => setIsEndFocused(true)}
+            onBlur={() => setIsEndFocused(false)}
+            style={styles.input}
+          />
+          {isEndFocused && endSuggestions.length > 0 && (
+            <FlatList
+              data={endSuggestions}
+              keyExtractor={(_, index) => index.toString()}
+              renderItem={({ item }) => (
+                <PaperText
+                  style={styles.suggestionItem}
+                  onPress={() => {
+                    setEndAddress(item);
+                    setIsEndFocused(false);
+                  }}
+                >
+                  {item}
+                </PaperText>
+              )}
+              style={styles.suggestionsList}
+              keyboardShouldPersistTaps="handled"
+            />
+          )}
+        </View>
+
+        <TextInput
+          label="Distance en km (si pas d'adresse)"
+          value={distanceKm}
+          onChangeText={setDistanceKm}
+          keyboardType="numeric"
+          style={styles.input}
+        />
+
+        <Dropdown
+          label={
+            modeID
+              ? transportModes.find((mode) => mode.value === modeID)?.label || 'Mode de transport'
+              : 'Mode de transport'
+          }
+          options={[...transportModes]}
+          onSelect={(value) => setModeID(value)}
+          visible={showDropdown}
+          showDropDown={() => setShowDropdown(true)}
+          onDismiss={() => setShowDropdown(false)}
+          inputProps={{
+            style: styles.dropdown,
+          }}
+        />
+
+        <DatePickerInput
+          label="Date du trajet"
+          value={tripDate}
+          onChange={(date) => setTripDate(date)}
+          style={styles.datePicker}
+        />
+
+        <Button mode="contained" onPress={handleSubmit} style={styles.submitButton}>
+          Créer le trajet
+        </Button>
+      </KeyboardAvoidingView>
     </PaperProvider>
   );
 };
 
 const styles = StyleSheet.create({
-  
- 
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#CC8B65",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+    textAlign: 'center',
+    color: theme.colors.text,
+  },
+  input: {
+    marginBottom: 8,
+    backgroundColor: theme.colors.surface,
+    color: theme.colors.primary,
+  },
   dropdown: {
     marginBottom: 16,
-    width: '70%',
   },
   datePicker: {
-    width: '70%',
     marginBottom: 16,
   },
- 
+  submitButton: {
+    marginTop: 16,
+    backgroundColor: "#B3E189",
+  },
   suggestionItem: {
     padding: 8,
     borderBottomWidth: 1,
@@ -312,44 +322,6 @@ const styles = StyleSheet.create({
   },
   autocompleteContainer: {
     marginBottom: 16,
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: theme.colors.background,
-  },
-  card: {
-    width: '100%',
-    flex: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    borderRadius: 8,
-  },
-  card2: {
-    
-    width: '70%',
-    backgroundColor: '#013328',
-    padding: 16,
-    borderRadius: 8,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    textAlign: 'center',
-    color: theme.colors.text,
-  },
-  input: {
-    
-    marginBottom: 16,
-    backgroundColor: theme.colors.surface,
-    color: theme.colors.text,
-  },
-  submitButton: {
-    // width: '60%',
-    marginTop: 16,
-    backgroundColor: theme.colors.primary,
   },
 });
 
