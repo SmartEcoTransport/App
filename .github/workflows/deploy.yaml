@@ -24,7 +24,7 @@ jobs:
 
       - name: Build the Expo Web App
         run: |
-          npx expo build:web
+          npx expo export:web
 
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
