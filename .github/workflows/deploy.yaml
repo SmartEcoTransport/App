@@ -16,7 +16,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use a Node.js version compatible with ReadableStream
+          node-version: '18' # Use Node.js 18 for compatibility
 
       - name: Install dependencies
         run: |
@@ -24,7 +24,7 @@ jobs:
 
       - name: Build the Expo Web App
         run: |
-          npx expo export
+          npx expo export --output-dir dist
 
       - name: Authenticate to GCP
         uses: google-github-actions/auth@v1
@@ -39,5 +39,5 @@ jobs:
 
       - name: Deploy to App Engine
         run: |
-          cp -r web-build/* .
+          cp -r dist/* .
           gcloud app deploy app.yaml --quiet
