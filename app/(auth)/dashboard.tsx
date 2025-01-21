@@ -3,14 +3,14 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import { useRootNavigationState, router } from 'expo-router';
 
-// 1) Import react-native-paper
+// Import react-native-paper
 import {
   Provider as PaperProvider,
   Text as PaperText,
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
 
-// 2) Same theme from your Login screen
+// Theme setup
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -42,33 +42,25 @@ export default function Dashboard() {
   }, [isLoggedIn, rootNavigationState]);
 
   return (
-    /**
-     * 3) Wrap your screen in PaperProvider so the theme is applied
-     */
     <PaperProvider theme={theme}>
-      {/**
-       * 4) Use a root View with a background color (like your Login screen).
-       *    Here we use #CC8B65 again, or you could use {theme.colors.background}.
-       */}
       <View style={[styles.screen, { backgroundColor: '#CC8B65' }]}>
-        <Navbar />
+      <Navbar />
+        <View style={styles.contentWrapper}>
 
-        {/**
-         * Instead of <Text onPress={logout}>, we can wrap PaperText in a 
-         * TouchableOpacity to keep it clickable, or just keep <Text> from RN.
-         */}
-        <TouchableOpacity onPress={logout}>
-          <PaperText
-            style={[
-              styles.logoutLink,
-              { color: theme.colors.primary }, // Use accent color for log-out link
-            ]}
-          >
-            Log Out
-          </PaperText>
-        </TouchableOpacity>
-        <ImpactGraph />
-        <TripsAggregationList />
+          <TouchableOpacity onPress={logout}>
+            <PaperText
+              style={[
+                styles.logoutLink,
+                { color: theme.colors.primary }, // Use accent color for log-out link
+              ]}
+            >
+              Log Out
+            </PaperText>
+          </TouchableOpacity>
+
+          <ImpactGraph />
+          <TripsAggregationList />
+        </View>
       </View>
     </PaperProvider>
   );
@@ -78,9 +70,11 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 8,
+  contentWrapper: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 1200, // Limit the width for larger screens
+    alignSelf: 'center', // Center content on larger screens
   },
   logoutLink: {
     marginTop: 24,

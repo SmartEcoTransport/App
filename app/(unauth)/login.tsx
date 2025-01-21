@@ -18,6 +18,7 @@ import {
   TextInput,
   MD3LightTheme as DefaultTheme,
 } from 'react-native-paper';
+import { black } from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 
 const theme = {
   ...DefaultTheme,
@@ -97,15 +98,6 @@ export default function LoginScreen() {
                 value={email}
                 onChangeText={setEmail}
                 style={styles.input}
-                // ⬇️ Override the text/placeholder/focus colors here
-                theme={{
-                  colors: {
-                    text: '#E3DCD2',
-                    placeholder: 'rgba(227,220,210,0.7)',
-                    primary: '#CC8B65',      // underline or border color on focus
-                    background: 'transparent',
-                  },
-                }}
               />
               <TextInput
                 mode="flat"
@@ -113,14 +105,6 @@ export default function LoginScreen() {
                 value={username}
                 onChangeText={setUsername}
                 style={styles.input}
-                theme={{
-                  colors: {
-                    text: '#E3DCD2',
-                    placeholder: 'rgba(227,220,210,0.7)',
-                    primary: '#CC8B65',
-                    background: 'transparent',
-                  },
-                }}
               />
               <TextInput
                 mode="flat"
@@ -129,14 +113,6 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
                 style={styles.input}
-                theme={{
-                  colors: {
-                    text: '#E3DCD2',
-                    placeholder: 'rgba(227,220,210,0.7)',
-                    primary: '#CC8B65',
-                    background: 'transparent',
-                  },
-                }}
               />
 
               {errorMessage ? (
@@ -175,14 +151,8 @@ export default function LoginScreen() {
                 value={email}
                 onChangeText={setEmail}
                 style={styles.input}
-                theme={{
-                  colors: {
-                    text: '#E3DCD2',
-                    placeholder: 'rgba(227,220,210,0.7)',
-                    primary: '#CC8B65',
-                    background: 'transparent',
-                  },
-                }}
+                autoCapitalize='none'
+                
               />
               <TextInput
                 mode="flat"
@@ -191,14 +161,6 @@ export default function LoginScreen() {
                 value={password}
                 onChangeText={setPassword}
                 style={styles.input}
-                theme={{
-                  colors: {
-                    text: '#E3DCD2',
-                    placeholder: 'rgba(227,220,210,0.7)',
-                    primary: '#CC8B65',
-                    background: 'transparent',
-                  },
-                }}
               />
 
               {errorMessage ? (
@@ -246,8 +208,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    marginBottom: 12,
-    backgroundColor: 'transparent',
+    marginBottom: 8,
+    backgroundColor: theme.colors.background,
   },
   button: {
     width: '80%',

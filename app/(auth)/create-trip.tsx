@@ -138,8 +138,6 @@ const CreateTrip: React.FC = () => {
       const requestBody = {
         start_address: startAddress || null,
         end_address: endAddress || null,
-        car_brand: modeID === 4 || modeID === 5 ? carBrand : null,
-        car_model: modeID === 4 || modeID === 5 ? carModel : null,
         distance_km: distanceKm ? parseFloat(distanceKm) : 0,
         mode_id: modeID,
         trip_date: tripDate.toISOString().split('T')[0],
@@ -264,23 +262,6 @@ const CreateTrip: React.FC = () => {
             style: styles.dropdown,
           }}
         />
-
-        {(modeID === 4 || modeID === 5) && (
-          <>
-            <TextInput
-              label="Marque de la voiture"
-              value={carBrand}
-              onChangeText={setCarBrand}
-              style={styles.input}
-            />
-            <TextInput
-              label="Modèle de la voiture"
-              value={carModel}
-              onChangeText={setCarModel}
-              style={styles.input}
-            />
-          </>
-        )}
 
         <DatePickerInput
           label="Date du trajet"

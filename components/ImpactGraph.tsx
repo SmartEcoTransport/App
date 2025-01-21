@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Button, TouchableOpacity } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from 'react-native';
 import { Chart, Line, VerticalAxis, HorizontalAxis } from 'react-native-responsive-linechart';
 import { API_BASE_URL } from '../constants/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,18 +15,19 @@ const ImpactGraph = () => {
       try {
         const token = await AsyncStorage.getItem('userToken');
         if (!token) {
-          console.error('Aucun token trouvé, redirection vers la connexion.');
+          console.error('No token found, redirecting to login.');
           router.replace('/(unauth)/login');
           return;
         }
-        const endpoint = view === 'day' 
-          ? `${API_BASE_URL}/trips/impactGraphDay` 
-          : `${API_BASE_URL}/trips/impactGraphMonth`;
+        const endpoint =
+          view === 'day'
+            ? `${API_BASE_URL}/trips/impactGraphDay`
+            : `${API_BASE_URL}/trips/impactGraphMonth`;
 
         const response = await fetch(endpoint, {
           method: 'GET',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
@@ -36,9 +37,9 @@ const ImpactGraph = () => {
         }
 
         const data = await response.json();
-        if (data && data.points) {
+        if (data && data.points && Array.isArray(data.points)) {
           setGraphData(
-            data.points.map(point => ({
+            data.points.map((point) => ({
               x: point.x, // Day or month index
               y: point.y, // Cumulative carbon impact
             }))
@@ -62,42 +63,35 @@ const ImpactGraph = () => {
     return <ActivityIndicator size="large" color="#CC8B65" style={styles.loader} />;
   }
 
-  if (graphData.length === 0) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.noDataText}>No data available for the selected view.</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <Chart
-        style={{ height: 200, width: '100%' }}
-        data={graphData}
-        padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
-        xDomain={{ min: 1, max: view === 'day' ? 365 : 12 }}
-        // add 5 percernt to the max value to make the graph look better
-        yDomain={{ min: 0, max: Math.max(...graphData.map(point => point.y)) * 1.05 }}
-      >
-        <VerticalAxis
-          tickCount={5}
-          theme={{
-            labels: { formatter: (v) => v.toFixed(0), label: { color: '#E3DCD2' } },
-            axis: { stroke: { color: '#E3DCD2' } },
-          }}
-        />
-        <HorizontalAxis
-          tickCount={view === 'day' ? 12 : 12}
-          theme={{
-            labels: { label: { color: '#E3DCD2' } },
-            axis: { stroke: { color: '#E3DCD2' } },
-          }}
-        />
-        <Line
-          theme={{ stroke: { color: '#CC8B65', width: 2 } }}
-        />
-      </Chart>
+      {graphData.length > 0 ? (
+        <Chart
+          style={{ height: 200, width: '100%' }}
+          data={graphData}
+          padding={{ left: 40, bottom: 20, right: 20, top: 20 }}
+          xDomain={{ min: 1, max: view === 'day' ? 365 : 12 }}
+          yDomain={{ min: 0, max: Math.max(...graphData.map((point) => point.y)) * 1.05 }}
+        >
+          <VerticalAxis
+            tickCount={5}
+            theme={{
+              labels: { formatter: (v) => v.toFixed(0), label: { color: '#E3DCD2' } },
+              axis: { stroke: { color: '#E3DCD2' } },
+            }}
+          />
+          <HorizontalAxis
+            tickCount={view === 'day' ? 12 : 12}
+            theme={{
+              labels: { label: { color: '#E3DCD2' } },
+              axis: { stroke: { color: '#E3DCD2' } },
+            }}
+          />
+          <Line theme={{ stroke: { color: '#CC8B65', width: 2 } }} />
+        </Chart>
+      ) : (
+        <Text style={styles.noDataText}>No data available for the selected view.</Text>
+      )}
       <TouchableOpacity style={styles.button} onPress={toggleView}>
         <Text style={styles.buttonText}>Switch to {view === 'month' ? 'Day' : 'Month'} View</Text>
       </TouchableOpacity>

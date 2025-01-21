@@ -185,7 +185,7 @@ const TripsAggregationList = () => {
 
 const styles = StyleSheet.create({
   impactText: {
-    color: '#CC8B65',
+    color: '#E3DCD2',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -208,7 +208,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#013328',
   },
   title: {
-    color: '#E3DCD2',
+    color: '#CC8B65',
+  
     textAlign: 'center',
     marginBottom: 16,
   },

@@ -152,13 +152,6 @@ const TripList: React.FC = () => {
         Créer un trajet
       </Button>
 
-      {/* Total Impact */}
-      {totalImpact !== null && (
-        <Text variant="headlineMedium" style={styles.impactText}>
-          Impact total des émissions : {totalImpact} kg CO2
-        </Text>
-      )}
-
       {/* Title */}
       <Text variant="headlineMedium" style={styles.title}>
         Mes trajets et émissions
