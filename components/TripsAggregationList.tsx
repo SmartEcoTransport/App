@@ -6,19 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../constants/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Trip data type
-type Trip = {
-  trip_id: number;
-  user_id: number;
-  start_address?: string;
-  end_address?: string;
-  distance_km?: number;
-  mode_id: number;
-  carbon_impact_kg?: number;
-  trip_date: string;
-};
-
-const modeIcons: { [key: number]: string } = {
+const modeIcons = {
   1: 'airplane',
   2: 'train',
   3: 'train-car',
@@ -76,15 +64,15 @@ const modeDescriptions: { [key: number]: string } = {
   29: 'Covoiturage électrique (4 passagers)',
 };
 
-const TripList: React.FC = () => {
-  const [trips, setTrips] = useState<Trip[] | null>(null);
+const TripsAggregationList = () => {
+  const [aggregatedTrips, setAggregatedTrips] = useState(null);
   const [totalImpact, setTotalImpact] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const { authLoading, isLoggedIn } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchTripsAndImpact() {
+    async function fetchAggregatedTrips() {
       try {
         const token = await AsyncStorage.getItem('userToken');
         if (!token) {
@@ -93,42 +81,37 @@ const TripList: React.FC = () => {
           return;
         }
 
-        const [tripsResponse, impactResponse] = await Promise.all([
-          fetch(`${API_BASE_URL}/trips`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }),
-          fetch(`${API_BASE_URL}/trips/impact`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          }),
-        ]);
+        const response = await fetch(`${API_BASE_URL}/trips/aggregation`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
 
-        if (!tripsResponse.ok || !impactResponse.ok) {
-          throw new Error('Échec de la récupération des données');
+        if (!response.ok) {
+          throw new Error('Échec de la récupération des données agrégées');
         }
 
-        const tripsData = await tripsResponse.json();
-        const impactData = await impactResponse.json();
-
-        setTrips(tripsData.trips);
-        setTotalImpact(impactData.total_impact);
-        console.log('Données récupérées :', { trips: tripsData, impact: impactData });
+        const data = await response.json();
+        setAggregatedTrips(data.trips);
+        // range over the trips to calculate the total impact
+        let totalImpact = 0;
+        for (const trip of data.trips) {
+          totalImpact += trip.total_impact;
+        }
+        // only two decimal places
+        totalImpact = Math.round(totalImpact * 100) / 100;
+        setTotalImpact(totalImpact);
       } catch (error) {
-        console.error('Erreur lors de la récupération des données :', error);
+        console.error('Erreur lors de la récupération des données agrégées :', error);
       } finally {
         setLoading(false);
       }
     }
 
     if (!authLoading && isLoggedIn) {
-      fetchTripsAndImpact();
+      fetchAggregatedTrips();
     }
   }, [authLoading, isLoggedIn]);
 
@@ -158,27 +141,26 @@ const TripList: React.FC = () => {
           Impact total des émissions : {totalImpact} kg CO2
         </Text>
       )}
-
-      {/* Title */}
-      <Text variant="headlineMedium" style={styles.title}>
-        Mes trajets et émissions
+      <Text variant="headlineSmall" style={styles.title}>
+        Agrégation par mode de transport
       </Text>
-
-      {/* Trip List */}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {trips && trips.length > 0 ? (
-          trips.map((trip) => (
-            <Card key={trip.trip_id} style={styles.card}>
+        {aggregatedTrips && aggregatedTrips.length > 0 ? (
+          aggregatedTrips.map((trip) => (
+            <Card key={trip.mode_id} style={styles.card}>
               <Card.Title
-                title={
-                  trip.start_address && trip.end_address
-                    ? `${trip.start_address} - ${trip.end_address}`
-                    : modeDescriptions[trip.mode_id] || 'Trajet inconnu'
-                }
+                title={modeDescriptions[trip.mode_id] || 'Inconnu'}
                 subtitle={
                   <View>
-                    <Text style={styles.emissionText}>Émissions : {trip.carbon_impact_kg ?? 0} kg CO2</Text>
-                    <Text style={styles.distanceText}>Distance : {trip.distance_km ?? 0} km</Text>
+                    <Text style={styles.emissionText}>
+                      Total Émissions : {Math.round(trip.total_impact * 100) / 100} kg CO2
+                    </Text>
+                    <Text style={styles.distanceText}>
+                      Total Distance : {trip.total_distance} km
+                    </Text>
+                    <Text style={styles.tripCountText}>
+                      Nombre de trajets : {trip.total_trips}
+                    </Text>
                   </View>
                 }
                 left={(props) => (
@@ -192,7 +174,9 @@ const TripList: React.FC = () => {
             </Card>
           ))
         ) : (
-          <Text style={styles.noTripsText}>Aucun trajet disponible. Créez-en un pour commencer !</Text>
+          <Text style={styles.noTripsText}>
+            Aucun trajet agrégé disponible.
+          </Text>
         )}
       </ScrollView>
     </View>
@@ -200,6 +184,15 @@ const TripList: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  impactText: {
+    color: '#CC8B65',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  createButton: {
+    backgroundColor: '#B3E189',
+    marginBottom: 16,
+  },
   container: {
     flex: 1,
     backgroundColor: '#013328',
@@ -214,17 +207,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#013328',
   },
-  createButton: {
-    backgroundColor: '#B3E189',
-    marginBottom: 16,
-  },
   title: {
     color: '#E3DCD2',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  impactText: {
-    color: '#CC8B65',
     textAlign: 'center',
     marginBottom: 16,
   },
@@ -241,6 +225,9 @@ const styles = StyleSheet.create({
   distanceText: {
     color: '#B3E189',
   },
+  tripCountText: {
+    color: '#E3DCD2',
+  },
   noTripsText: {
     color: '#E3DCD2',
     textAlign: 'center',
@@ -249,4 +236,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TripList;
+export default TripsAggregationList;

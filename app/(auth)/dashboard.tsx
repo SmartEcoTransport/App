@@ -26,6 +26,8 @@ const theme = {
 
 import Navbar from '@/components/Navbar';
 import TripList from '@/components/TripList';
+import TripsAggregationList from '@/components/TripsAggregationList';
+import ImpactGraph from '@/components/ImpactGraph';
 
 export default function Dashboard() {
   const { logout, isLoggedIn } = useAuth();
@@ -65,20 +67,8 @@ export default function Dashboard() {
             Log Out
           </PaperText>
         </TouchableOpacity>
-
-        <View>
-          {/**
-           * 5) Show your title using PaperText or a plain Text. 
-           *    PaperText can use variant for consistent typography.
-           */}
-          <PaperText
-            variant="headlineMedium"
-            style={[styles.title, { color: theme.colors.text }]}
-          >
-            Dashboard
-          </PaperText>
-        </View>
-        <TripList />
+        <ImpactGraph />
+        <TripsAggregationList />
       </View>
     </PaperProvider>
   );
